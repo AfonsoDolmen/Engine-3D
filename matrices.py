@@ -2,9 +2,9 @@ import math
 
 class Matrix:
     def projection_matrice(self,near,far,fov):
-        self.near = near;
-        self.far = far;
-        self.fov = fov;
+        self.near = near
+        self.far = far
+        self.fov = fov
         self.a = 400/800
 
         self.fovrad = 1.0 / math.tan(self.fov * 0.5 * 180 / 3.14159) 
