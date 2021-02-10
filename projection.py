@@ -3,7 +3,6 @@ import math, pygame
 class Projection:
     def __init__(self):
         self.i  = 0
-        self.index = 0
         
     def multiply(self, vertices, matrix, proj_v):
         while self.i < len(vertices):
@@ -28,15 +27,15 @@ class Projection:
         self.i = 0
 
     def draw(self,screen,vertices):
-        while self.index < len(vertices):
-            vertices[self.index][0] += 1.0; vertices[self.index][1] += 1.0
+        while self.i < len(vertices):
+            vertices[self.i][0] += 1.0; vertices[self.i][1] += 1.0
 
-            vertices[self.index][0] *= 0.5 * 800
-            vertices[self.index][1] *= 0.5 * 400
+            vertices[self.i][0] *= 0.5 * 800
+            vertices[self.i][1] *= 0.5 * 400
 
-            self.index += 1
+            self.i += 1
 
-        self.index = 0
+        self.i = 0
 
         # Taking the position of the all the vertices
         a = vertices[0]
