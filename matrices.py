@@ -9,13 +9,13 @@ class Matrix:
 
         self.m00 = 1.0 / self.a * math.tan(self.fov/2)
         self.m11 = 1.0 / math.tan(self.fov/2)
-        self.m22 = (self.far + self.near) / (self.far - self.near)
-        self.m23 = (2 * self.far * self.near) / (self.far - self.near)
+        self.m22 = self.far / (self.far - self.near)
+        self.m32 = (-self.far - self.near) / (self.far - self.near)
 
         self.projection_matrix = [[self.m00,0,0,0],
                                   [0,self.m11,0,0],
-                                  [0,0,-self.m22,-self.m23],
-                                  [0,0,-1,0]]
+                                  [0,0,self.m22,1],
+                                  [0,0,self.m32,0]]
 
         return self.projection_matrix
 
