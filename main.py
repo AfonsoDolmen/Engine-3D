@@ -20,7 +20,7 @@ projection1 = projection.Projection()
 matrix = matrices.Matrix()
 
 # Creating the cube with the position
-cube = cube.Cube(0, 0, 3)
+cube = cube.Cube()
 camera = [0,0,0]
 
 # Taking the vertices of the cube
@@ -42,14 +42,19 @@ def update():
     rot_verticesZ = [f for f in range(len(cubeVertices))]
 
     translated_vertices = [m for m in range(len(cubeVertices))]
+    scaled_vertices     = [s for s in range(len(cubeVertices))]
 
     triangles = [f for f in range(len(cubeVertices))]
 
     # Taking the projection matrix
     projection_matrix = matrix.projection_matrice(0.1,1000,45)
 
-    tX,tY,tZ = 0, 0, 0
+    # Cube position
+    tX,tY,tZ = -0, 0, 3
 
+    # Cube scale
+    scaleX,scaleY,scaleZ = 1, 1, 1
+ 
     #print(triangles)
 
     # Principal loop
@@ -64,17 +69,21 @@ def update():
 
         # Creating the matrices
         rotationX = matrix.rotation_matrixX(angle)
+        rotationY = matrix.rotation_matrixY(angle)
         rotationZ = matrix.rotation_matrixZ(angle)
         translation = matrix.translation_matrix(tX,tY,tZ)
+        scale = matrix.scale_matrix(scaleX,scaleY,scaleZ)
 
         # Multiplying the vertices by the matrices
-        # Rotating the vertices around the X axis
-        for rotX in cubeVertices:
-            projection1.multiply(cubeVertices,rotationX,rot_verticesX)
+        for scaling in cubeVertices:
+            projection1.multiply(cubeVertices,scale,scaled_vertices)
 
-        # Rotating the vertices around the Z axis
-        for rotZ in rot_verticesX:
-            projection1.multiply(rot_verticesX,rotationZ,rot_verticesZ)
+        # Rotating the vertices around the X axis
+        for rotX in scaled_vertices:
+            projection1.multiply(scaled_vertices,rotationY,rot_verticesY)
+
+        for rotZ in rot_verticesY:
+            projection1.multiply(rot_verticesY,rotationZ,rot_verticesZ)
 
         # Translating the vertices
         for translate in rot_verticesZ:
@@ -93,13 +102,9 @@ def update():
         index = 0
 
         # Drawing the cube
-        projection1.draw(screen,projected_vertices)
+        projection1.draw(screen,projected_vertices,triangles)
 
-        angle += 0.003
-        
-        # Moving the vertices in the X axis and Z axis
-        tX = -0.3
-        tZ =  3
+        angle -= 0.01
 
         # Updating the screen
         pygame.display.update()
@@ -111,6 +116,7 @@ def main():
     # Initializing PyGame
     pygame.init()
 
+    # Update function
     update()
 
 main()

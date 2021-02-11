@@ -3,6 +3,11 @@ import math, pygame
 class Projection:
     def __init__(self):
         self.i  = 0
+
+        self.a  = 1
+        self.b  = 0
+
+        self.camera = [0,0,0]
         
     def multiply(self, vertices, matrix, proj_v):
         while self.i < len(vertices):
@@ -26,12 +31,16 @@ class Projection:
         
         self.i = 0
 
-    def draw(self,screen,vertices):
+    def draw(self,screen,vertices,triangles):
         while self.i < len(vertices):
-            vertices[self.i][0] += 1.0; vertices[self.i][1] += 1.0
+            # Adjusting the coordinates of the vertices in the screen
+            vertices[self.i][0] += 1; vertices[self.i][1] += 1
 
             vertices[self.i][0] *= 0.5 * 800
             vertices[self.i][1] *= 0.5 * 400
+
+            # Saving all the 3 vertices of the triangles
+            triangles[self.i] = [vertices[0],vertices[1],vertices[2]]
 
             self.i += 1
 

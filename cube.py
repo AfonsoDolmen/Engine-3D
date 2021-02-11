@@ -1,10 +1,8 @@
 import pygame
 
 class Cube:
-    def __init__(self,x,y,z):
-        self.x = x
-        self.y = y
-        self.z = z
+    def __init__(self):
+        pass
 
     def vertices(self):
         # Creating the list with the vertices
