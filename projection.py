@@ -7,10 +7,10 @@ class Projection:
     def multiply(self, vertices, matrix, proj_v):
         while self.i < len(vertices):
             # Multiplying the vertices
-            self.x = vertices[self.i][0] * matrix[0][0] + vertices[self.i][1] * matrix[0][1] + vertices[self.i][2] * matrix[0][2] + matrix[0][3]
-            self.y = vertices[self.i][0] * matrix[1][0] + vertices[self.i][1] * matrix[1][1] + vertices[self.i][2] * matrix[1][2] + matrix[1][3]
-            self.z = vertices[self.i][0] * matrix[2][0] + vertices[self.i][1] * matrix[2][1] + vertices[self.i][2] * matrix[2][2] + matrix[2][3]
-            self.w = vertices[self.i][0] * matrix[3][0] + vertices[self.i][1] * matrix[3][1] + vertices[self.i][2] * matrix[3][2] + matrix[3][3]
+            self.x = float(vertices[self.i][0]) * matrix[0][0] + float(vertices[self.i][1]) * matrix[0][1] + float(vertices[self.i][2]) * matrix[0][2] + matrix[0][3]
+            self.y = float(vertices[self.i][0]) * matrix[1][0] + float(vertices[self.i][1]) * matrix[1][1] + float(vertices[self.i][2]) * matrix[1][2] + matrix[1][3]
+            self.z = float(vertices[self.i][0]) * matrix[2][0] + float(vertices[self.i][1]) * matrix[2][1] + float(vertices[self.i][2]) * matrix[2][2] + matrix[2][3]
+            self.w = float(vertices[self.i][0]) * matrix[3][0] + float(vertices[self.i][1]) * matrix[3][1] + float(vertices[self.i][2]) * matrix[3][2] + matrix[3][3]
 
             
             # Normalizing the vertices
@@ -39,10 +39,14 @@ class Projection:
 
         # Drawing the triangles
         for triangle in triangles:
-            a = triangle[0]
-            b = triangle[1]
-            c = triangle[2]
+            a = int(triangle[0])-1
+            b = int(triangle[1])-1
+            c = int(triangle[2])-1
 
             pygame.draw.line(screen,(255,255,255),(vertices[a][0],vertices[a][1]),(vertices[b][0],vertices[b][1]))
             pygame.draw.line(screen,(255,255,255),(vertices[b][0],vertices[b][1]),(vertices[c][0],vertices[c][1]))
             pygame.draw.line(screen,(255,255,255),(vertices[c][0],vertices[c][1]),(vertices[a][0],vertices[a][1]))
+
+        # Drawing the vertices
+        # for vertice in vertices:
+        #     pygame.draw.circle(screen,(255,255,255),(vertice[0],vertice[1]),3)
