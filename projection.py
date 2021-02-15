@@ -3,11 +3,6 @@ import math, pygame
 class Projection:
     def __init__(self):
         self.i  = 0
-
-        self.a  = 1
-        self.b  = 0
-
-        self.camera = [0,0,0]
         
     def multiply(self, vertices, matrix, proj_v):
         while self.i < len(vertices):
@@ -18,8 +13,7 @@ class Projection:
             self.w = vertices[self.i][0] * matrix[3][0] + vertices[self.i][1] * matrix[3][1] + vertices[self.i][2] * matrix[3][2] + matrix[3][3]
 
             
-            # Adjusting all the vertices in the screen
-            # The projection returns coordinates valor of -1 and 1
+            # Normalizing the vertices
             if self.w != 0.0:
                 self.x = self.x / self.w
                 self.y = self.y / self.w
@@ -39,62 +33,16 @@ class Projection:
             vertices[self.i][0] *= 0.5 * 800
             vertices[self.i][1] *= 0.5 * 400
 
-            # Saving all the 3 vertices of the triangles
-            triangles[self.i] = [vertices[0],vertices[1],vertices[2]]
-
             self.i += 1
 
         self.i = 0
 
-        # Taking the position of the all the vertices
-        a = vertices[0]
-        b = vertices[1]
-        c = vertices[2]
-        d = vertices[3]
+        # Drawing the triangles
+        for triangle in triangles:
+            a = triangle[0]
+            b = triangle[1]
+            c = triangle[2]
 
-        e = vertices[4]
-        f = vertices[5]
-        g = vertices[6]
-        h = vertices[7]
-
-        # Front Face
-        pygame.draw.line(screen,(255,255,255),(a[0],a[1]),(b[0],b[1]))
-        pygame.draw.line(screen,(255,255,255),(b[0],b[1]),(d[0],d[1]))
-        pygame.draw.line(screen,(255,255,255),(d[0],d[1]),(a[0],a[1]))
-        pygame.draw.line(screen,(255,255,255),(b[0],b[1]),(c[0],c[1]))
-        pygame.draw.line(screen,(255,255,255),(c[0],c[1]),(d[0],d[1]))
-
-        # Left Face
-        pygame.draw.line(screen,(255,255,255),(e[0],e[1]),(f[0],f[1]))
-        pygame.draw.line(screen,(255,255,255),(f[0],f[1]),(a[0],a[1]))
-        pygame.draw.line(screen,(255,255,255),(a[0],a[1]),(e[0],e[1]))
-        pygame.draw.line(screen,(255,255,255),(f[0],f[1]),(b[0],b[1]))
-        pygame.draw.line(screen,(255,255,255),(b[0],b[1]),(a[0],a[1]))
-
-        # Right Face
-        pygame.draw.line(screen,(255,255,255),(h[0],h[1]),(g[0],g[1]))
-        pygame.draw.line(screen,(255,255,255),(g[0],g[1]),(d[0],d[1]))
-        pygame.draw.line(screen,(255,255,255),(d[0],d[1]),(h[0],h[1]))
-        pygame.draw.line(screen,(255,255,255),(g[0],g[1]),(c[0],c[1]))
-        pygame.draw.line(screen,(255,255,255),(c[0],c[1]),(d[0],d[1]))
-
-        # Back Face
-        pygame.draw.line(screen,(255,255,255),(e[0],e[1]),(f[0],f[1]))
-        pygame.draw.line(screen,(255,255,255),(f[0],f[1]),(h[0],h[1]))
-        pygame.draw.line(screen,(255,255,255),(h[0],h[1]),(e[0],e[1]))
-        pygame.draw.line(screen,(255,255,255),(f[0],f[1]),(g[0],g[1]))
-        pygame.draw.line(screen,(255,255,255),(g[0],g[1]),(h[0],h[1]))
-
-        # Top Face
-        pygame.draw.line(screen,(255,255,255),(b[0],b[1]),(f[0],f[1]))
-        pygame.draw.line(screen,(255,255,255),(f[0],f[1]),(c[0],c[1]))
-        pygame.draw.line(screen,(255,255,255),(c[0],c[1]),(b[0],b[1]))
-        pygame.draw.line(screen,(255,255,255),(f[0],f[1]),(g[0],g[1]))
-        pygame.draw.line(screen,(255,255,255),(g[0],g[1]),(c[0],c[1]))
-
-        # Bottom Face
-        pygame.draw.line(screen,(255,255,255),(a[0],a[1]),(e[0],e[1]))
-        pygame.draw.line(screen,(255,255,255),(e[0],e[1]),(d[0],d[1]))
-        pygame.draw.line(screen,(255,255,255),(d[0],d[1]),(a[0],a[1]))
-        pygame.draw.line(screen,(255,255,255),(e[0],e[1]),(h[0],h[1]))
-        pygame.draw.line(screen,(255,255,255),(h[0],h[1]),(d[0],d[1]))
+            pygame.draw.line(screen,(255,255,255),(vertices[a][0],vertices[a][1]),(vertices[b][0],vertices[b][1]))
+            pygame.draw.line(screen,(255,255,255),(vertices[b][0],vertices[b][1]),(vertices[c][0],vertices[c][1]))
+            pygame.draw.line(screen,(255,255,255),(vertices[c][0],vertices[c][1]),(vertices[a][0],vertices[a][1]))

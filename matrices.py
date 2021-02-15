@@ -8,7 +8,7 @@ class Matrix:
         self.a = 400/800
 
         self.m00 = 1.0 / self.a * math.tan(self.fov/2 * 3.14159 / 180) # Creating the fovX with the aspect
-        self.m11 = 1.0 / math.tan(self.fov/2 * 3.14159 / 180)          # Creating the fovY with
+        self.m11 = 1.0 / math.tan(self.fov/2 * 3.14159 / 180)          # Creating the fovY
         self.m22 = self.far / (self.far - self.near)                   # Adjusting the z coordinates with the near and far
         self.m32 = (self.far - self.near) / (self.far - self.near)
 

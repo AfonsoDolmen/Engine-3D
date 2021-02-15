@@ -8,7 +8,7 @@
 # And more!
 
 import pygame
-import projection,matrices,cube
+import projection,matrices,cube#,objLoader
 import time
 import math
 
@@ -18,6 +18,9 @@ screen = pygame.display.set_mode((800,400))
 # Summoning the objects
 projection1 = projection.Projection()
 matrix = matrices.Matrix()
+
+# Summoning the object loader
+# objLoader = objLoader.ObjLoader()
 
 # Creating the cube with the position
 cube = cube.Cube()
@@ -34,6 +37,10 @@ def update():
     index = 0
     angle = 0
 
+    #vertices = objLoader.loadObj('lanterna.obj')
+
+    #print(vertices)
+
     # Saving all the projected vertices in a list
     projected_vertices  = [n for n in range(len(cubeVertices))]
 
@@ -44,22 +51,58 @@ def update():
     translated_vertices = [m for m in range(len(cubeVertices))]
     scaled_vertices     = [s for s in range(len(cubeVertices))]
 
-    triangles = [f for f in range(len(cubeVertices))]
+    # Taking the triangles
+    triangles = [[0,1,3],   # Frontal face
+                 [1,2,3],
+                 
+                 # Left face
+                 [0,4,5], 
+                 [5,1,0],
+                 
+                 # Back face
+                 [4,5,7],
+                 [5,6,7],
+                 
+                 # Right face
+                 [7,6,2],
+                 [2,3,7],
+                 
+                 # Top face
+                 [1,5,6],
+                 [6,2,1],
+                 
+                 # Bottom face
+                 [0,4,7],
+                 [7,3,0]]
 
+    # Cube position
+    tX,tY,tZ = 0, -0.5, 3
+
+    # Cube scale
+    scaleX,scaleY,scaleZ = 1, 0.8, 1
+ 
     # Taking the projection matrix
     projection_matrix = matrix.projection_matrice(0.1,1000,45)
 
-    # Cube position
-    tX,tY,tZ = -0, 0, 3
+    def scaleVertices(vertices,scaleMatrix,scaledVertices):
+        for scaling in vertices:
+            projection1.multiply(vertices,scaleMatrix,scaledVertices)
 
-    # Cube scale
-    scaleX,scaleY,scaleZ = 1, 1, 1
- 
-    #print(triangles)
+    def rotateVertices(vertices,rotationMatrix,rotatedVertices):
+        for rotate in vertices:
+            projection1.multiply(vertices,rotationMatrix,rotatedVertices)
+
+    def translateVertices(vertices,translationMatrix,translatedVertices):
+        for translate in vertices:
+            projection1.multiply(vertices,translationMatrix,translatedVertices)
+    
+    def projectVertices(vertices,projectionMatrix,projectedVertices):
+        for project in vertices:
+            projection1.multiply(vertices,projectionMatrix,projectedVertices)
 
     # Principal loop
     while(True):
-        #fps = clock.tick(60)
+        fps = clock.tick(60)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit()
@@ -75,36 +118,17 @@ def update():
         scale = matrix.scale_matrix(scaleX,scaleY,scaleZ)
 
         # Multiplying the vertices by the matrices
-        for scaling in cubeVertices:
-            projection1.multiply(cubeVertices,scale,scaled_vertices)
 
-        # Rotating the vertices around the X axis
-        for rotX in scaled_vertices:
-            projection1.multiply(scaled_vertices,rotationY,rot_verticesY)
-
-        for rotZ in rot_verticesY:
-            projection1.multiply(rot_verticesY,rotationZ,rot_verticesZ)
-
-        # Translating the vertices
-        for translate in rot_verticesZ:
-            projection1.multiply(rot_verticesZ,translation,translated_vertices)
-
-        # Finding the 3D object position in a 2D position
-        for proj in translated_vertices:
-            projection1.multiply(translated_vertices,projection_matrix,projected_vertices)
-
-        # Taking the triangles coordinates
-        while index < len(triangles):
-            triangles[index] = [projected_vertices[0], projected_vertices[1], projected_vertices[2]]
-
-            index += 1
-
-        index = 0
+        scaleVertices(cubeVertices,scale,scaled_vertices)
+        rotateVertices(scaled_vertices,rotationY,rot_verticesY)
+        translateVertices(rot_verticesY,translation,translated_vertices)
+        projectVertices(translated_vertices,projection_matrix,projected_vertices)
 
         # Drawing the cube
         projection1.draw(screen,projected_vertices,triangles)
 
         angle -= 0.01
+        # #scaleY    += 0.01
 
         # Updating the screen
         pygame.display.update()
