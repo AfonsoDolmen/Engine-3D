@@ -8,7 +8,7 @@
 # And more!
 
 import pygame
-import projection,matrices,cube#,objLoader
+import projection,matrices,cube
 import time
 import math
 
@@ -33,13 +33,25 @@ clock = pygame.time.Clock()
 
 index = 0
 
+def scaleVertices(vertices,scaleMatrix,scaledVertices):
+    for scaling in vertices:
+        projection1.multiply(vertices,scaleMatrix,scaledVertices)
+
+def rotateVertices(vertices,rotationMatrix,rotatedVertices):
+    for rotate in vertices:
+        projection1.multiply(vertices,rotationMatrix,rotatedVertices)
+
+def translateVertices(vertices,translationMatrix,translatedVertices):
+    for translate in vertices:
+        projection1.multiply(vertices,translationMatrix,translatedVertices)
+
+def projectVertices(vertices,projectionMatrix,projectedVertices):
+    for project in vertices:
+        projection1.multiply(vertices,projectionMatrix,projectedVertices)
+
 def update():
     index = 0
     angle = 0
-
-    #vertices = objLoader.loadObj('lanterna.obj')
-
-    #print(vertices)
 
     # Saving all the projected vertices in a list
     projected_vertices  = [n for n in range(len(cubeVertices))]
@@ -83,22 +95,6 @@ def update():
  
     # Taking the projection matrix
     projection_matrix = matrix.projection_matrice(0.1,1000,45)
-
-    def scaleVertices(vertices,scaleMatrix,scaledVertices):
-        for scaling in vertices:
-            projection1.multiply(vertices,scaleMatrix,scaledVertices)
-
-    def rotateVertices(vertices,rotationMatrix,rotatedVertices):
-        for rotate in vertices:
-            projection1.multiply(vertices,rotationMatrix,rotatedVertices)
-
-    def translateVertices(vertices,translationMatrix,translatedVertices):
-        for translate in vertices:
-            projection1.multiply(vertices,translationMatrix,translatedVertices)
-    
-    def projectVertices(vertices,projectionMatrix,projectedVertices):
-        for project in vertices:
-            projection1.multiply(vertices,projectionMatrix,projectedVertices)
 
     # Principal loop
     while(True):
