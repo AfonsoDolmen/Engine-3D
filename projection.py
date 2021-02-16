@@ -1,4 +1,4 @@
-import math, pygame
+import math, pygame, pygame.gfxdraw
 
 class Projection:
     def __init__(self):
@@ -41,9 +41,9 @@ class Projection:
 
         # Drawing the triangles
         for triangle in triangles:
-            a = int(triangle[0])-1
-            b = int(triangle[1])-1
-            c = int(triangle[2])-1
+            a = int(triangle[0])
+            b = int(triangle[1])
+            c = int(triangle[2])
 
             # Culling
             v0 = [vertices[b][0] - vertices[a][0],
@@ -61,10 +61,16 @@ class Projection:
             l = math.sqrt(normal[0]*normal[0] + normal[1]*normal[1] + normal[2]*normal[2])
             normal[0] /= l; normal[1] /= l; normal[2] /= l
 
-            if normal[2] < 0.0:
-                pygame.draw.line(screen,(255,255,255),(vertices[a][0],vertices[a][1]),(vertices[b][0],vertices[b][1]))
-                pygame.draw.line(screen,(255,255,255),(vertices[b][0],vertices[b][1]),(vertices[c][0],vertices[c][1]))
-                pygame.draw.line(screen,(255,255,255),(vertices[c][0],vertices[c][1]),(vertices[a][0],vertices[a][1]))
+            if normal[0] + normal[1] + normal[2] < 0.0:
+                # Wireframe
+                pygame.draw.line(screen,(0,0,0),(vertices[a][0],vertices[a][1]),(vertices[b][0],vertices[b][1]),5)
+                pygame.draw.line(screen,(0,0,0),(vertices[b][0],vertices[b][1]),(vertices[c][0],vertices[c][1]),5)
+                pygame.draw.line(screen,(0,0,0),(vertices[c][0],vertices[c][1]),(vertices[a][0],vertices[a][1]),5)
+                
+                # Rasterization
+                pygame.gfxdraw.filled_trigon(screen,int(vertices[a][0]),int(vertices[a][1]),
+                                                    int(vertices[b][0]),int(vertices[b][1]),
+                                                    int(vertices[c][0]),int(vertices[c][1]),(255,255,255))
 
         # Drawing the vertices
         # for vertice in vertices:

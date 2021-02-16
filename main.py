@@ -2,12 +2,12 @@
 # Programmed by Afonso ^^
 
 # Futures updates:
-# Rasterization;
 # Clipping;
 # And more!
 
 # Futures Added:
 # Culling;
+# Rasterization;
 
 import pygame
 import projection,matrices,cube,objLoader
@@ -55,8 +55,8 @@ def update(screen):
     index = 0
     angle = 0
 
-    vertices  = objVertices.copy()
-    triangles = objTriangles.copy()
+    vertices  = cubeVertices.copy()
+    triangles = cubeTriangles.copy()
 
     # Saving all the projected vertices in a list
     projected_vertices = [n for n in range(len(vertices))]
@@ -69,10 +69,10 @@ def update(screen):
     scaled_vertices     = [s for s in range(len(vertices))]
 
     # Cube position
-    tX,tY,tZ = 0, -0.5, 5
+    tX,tY,tZ = 0, -0.7, 3
 
     # Cube scale
-    scaleX,scaleY,scaleZ = 0.05, 0.03, 0.05
+    scaleX,scaleY,scaleZ = 1, 0.7, 1
  
     # Taking the projection matrix
     projection_matrix = matrix.projection_matrice(0.1,1000,45)
@@ -104,7 +104,7 @@ def update(screen):
         projection1.draw(screen,projected_vertices,triangles)
 
         # Subtracting the angle of the object
-        angle -= 0.1
+        angle -= 0.01
 
         # Updating the screen
         pygame.display.update()

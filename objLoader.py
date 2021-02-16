@@ -3,6 +3,9 @@ class ObjLoader:
         self.render = render
 
     def takeTriangles(self):
+        for triangle in self.triangles:
+            int(triangle[0]) - 1; int(triangle[1]) - 1; int(triangle[2]) - 1
+
         return self.triangles
 
     def takeVertices(self):
