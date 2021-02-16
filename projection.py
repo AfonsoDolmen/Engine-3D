@@ -3,6 +3,8 @@ import math, pygame
 class Projection:
     def __init__(self):
         self.i  = 0
+
+        self.camera = [0,0,0]
         
     def multiply(self, vertices, matrix, proj_v):
         while self.i < len(vertices):
@@ -43,9 +45,26 @@ class Projection:
             b = int(triangle[1])-1
             c = int(triangle[2])-1
 
-            pygame.draw.line(screen,(255,255,255),(vertices[a][0],vertices[a][1]),(vertices[b][0],vertices[b][1]))
-            pygame.draw.line(screen,(255,255,255),(vertices[b][0],vertices[b][1]),(vertices[c][0],vertices[c][1]))
-            pygame.draw.line(screen,(255,255,255),(vertices[c][0],vertices[c][1]),(vertices[a][0],vertices[a][1]))
+            # Culling
+            v0 = [vertices[b][0] - vertices[a][0],
+                  vertices[b][1] - vertices[a][1],
+                  vertices[b][2] - vertices[a][2]]
+
+            v1 = [vertices[c][0] - vertices[a][0],
+                  vertices[c][1] - vertices[a][1],
+                  vertices[c][2] - vertices[a][2]]
+
+            normal = [v0[1] * v1[2] - v0[2] * v1[1],
+                      v0[2] * v1[0] - v0[0] * v1[2],
+                      v0[0] * v1[1] - v0[1] * v1[0]]
+
+            l = math.sqrt(normal[0]*normal[0] + normal[1]*normal[1] + normal[2]*normal[2])
+            normal[0] /= l; normal[1] /= l; normal[2] /= l
+
+            if normal[2] < 0.0:
+                pygame.draw.line(screen,(255,255,255),(vertices[a][0],vertices[a][1]),(vertices[b][0],vertices[b][1]))
+                pygame.draw.line(screen,(255,255,255),(vertices[b][0],vertices[b][1]),(vertices[c][0],vertices[c][1]))
+                pygame.draw.line(screen,(255,255,255),(vertices[c][0],vertices[c][1]),(vertices[a][0],vertices[a][1]))
 
         # Drawing the vertices
         # for vertice in vertices:

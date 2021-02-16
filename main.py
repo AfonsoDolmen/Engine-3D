@@ -2,34 +2,34 @@
 # Programmed by Afonso ^^
 
 # Futures updates:
-# Culling;
 # Rasterization;
 # Clipping;
 # And more!
+
+# Futures Added:
+# Culling;
 
 import pygame
 import projection,matrices,cube,objLoader
 import time
 import math
 
-# Create the screen
-screen = pygame.display.set_mode((800,400))
-
 # Summoning the objects
 projection1 = projection.Projection()
 matrix = matrices.Matrix()
 
 # Summoning the object loader
-objLoader = objLoader.ObjLoader()
+objLoader = objLoader.ObjLoader(False)
+
 objLoader.loadObj('teapot.obj')
 
-vertices  = objLoader.takeVertices()
-triangles = objLoader.takeTriangles()
+# Taking the vertices and triangles of the obj
+objVertices  = objLoader.takeVertices()
+objTriangles = objLoader.takeTriangles()
 
-# Creating the cube with the position
-cube = cube.Cube()
+cube = cube.Cube(False)
 
-# Taking the vertices of the cube
+# Taking the vertices and triangles of the cube
 cubeVertices  = cube.vertices()
 cubeTriangles = cube.triangles()
 
@@ -51,12 +51,15 @@ def projectVertices(vertices,projectionMatrix,projectedVertices):
     for project in vertices:
         projection1.multiply(vertices,projectionMatrix,projectedVertices)
 
-def update():
+def update(screen):
     index = 0
     angle = 0
 
+    vertices  = objVertices.copy()
+    triangles = objTriangles.copy()
+
     # Saving all the projected vertices in a list
-    projected_vertices  = [n for n in range(len(vertices))]
+    projected_vertices = [n for n in range(len(vertices))]
 
     rot_verticesX = [x for x in range(len(vertices))]
     rot_verticesY = [y for y in range(len(vertices))]
@@ -66,7 +69,7 @@ def update():
     scaled_vertices     = [s for s in range(len(vertices))]
 
     # Cube position
-    tX,tY,tZ = 0, -0.7, 5
+    tX,tY,tZ = 0, -0.5, 5
 
     # Cube scale
     scaleX,scaleY,scaleZ = 0.05, 0.03, 0.05
@@ -113,7 +116,10 @@ def main():
     # Initializing PyGame
     pygame.init()
 
+    # Create the screen
+    screen = pygame.display.set_mode((800,400))
+
     # Update function
-    update()
+    update(screen)
 
 main()

@@ -1,8 +1,8 @@
 import pygame
 
 class Cube:
-    def __init__(self):
-        pass
+    def __init__(self,render):
+        self.render = render
 
     def vertices(self):
         # Creating the list with the vertices
@@ -31,19 +31,19 @@ class Cube:
                         [5,1,0],
                         
                         # Back face
-                        [4,5,7],
-                        [5,6,7],
+                        [7,5,4],
+                        [7,6,5],
                         
                         # Right face
-                        [7,6,2],
-                        [2,3,7],
+                        [2,6,7],
+                        [7,3,2],
                         
                         # Top face
                         [1,5,6],
                         [6,2,1],
                         
                         # Bottom face
-                        [0,4,7],
-                        [7,3,0]]
+                        [7,4,0],
+                        [0,3,7]]
 
         return self.triangles
