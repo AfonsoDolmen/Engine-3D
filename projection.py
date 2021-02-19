@@ -64,9 +64,9 @@ class Projection:
 
         # Drawing the triangles
         for triangle in triangles:
-            a = int(triangle[0])
-            b = int(triangle[1])
-            c = int(triangle[2])
+            a = int(triangle[0])-1
+            b = int(triangle[1])-1
+            c = int(triangle[2])-1
 
             # Culling
             v0 = [vertices[b][0] - vertices[a][0],

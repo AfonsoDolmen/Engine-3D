@@ -56,8 +56,8 @@ def update(screen):
     index = 0
     angle = 0
 
-    vertices  = cubeVertices.copy()
-    triangles = cubeTriangles.copy()
+    vertices  = objVertices.copy()
+    triangles = objTriangles.copy()
 
     # Saving all the projected vertices in a list
     projected_vertices = [n for n in range(len(vertices))]
@@ -70,10 +70,10 @@ def update(screen):
     scaled_vertices     = [s for s in range(len(vertices))]
 
     # Cube position
-    tX,tY,tZ = 0, -0.5, 3
+    tX,tY,tZ = 0, -0.5, 5
 
     # Cube scale
-    scaleX,scaleY,scaleZ = 1, 0.6, 1
+    scaleX,scaleY,scaleZ = 0.05, 0.03, 0.05
 
     # Taking the projection matrix
     projection_matrix = matrix.projection_matrice(0.1,1000,45)
