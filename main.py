@@ -75,6 +75,12 @@ def update(screen):
     # Cube scale
     scaleX,scaleY,scaleZ = 0.05, 0.03, 0.05
 
+    # Light position
+    lightX,lightY,lightZ = 0,1,-1
+
+    light_position = [[lightX,lightY,lightZ]]
+    light_pos = [l for l in range(len(light_position))]
+
     # Taking the projection matrix
     projection_matrix = matrix.projection_matrice(0.1,1000,45)
 
@@ -92,6 +98,7 @@ def update(screen):
         rotationX   = matrix.rotation_matrixX(angle)
         rotationY   = matrix.rotation_matrixY(angle)
         rotationZ   = matrix.rotation_matrixZ(angle)
+        translationLight = matrix.translation_matrix(lightX,lightY,lightZ)
         translation = matrix.translation_matrix(tX,tY,tZ)
         scale       = matrix.scale_matrix(scaleX,scaleY,scaleZ)
 
@@ -101,11 +108,18 @@ def update(screen):
         translateVertices(rot_verticesY,translation,translated_vertices)
         projectVertices(translated_vertices,projection_matrix,projected_vertices)
 
+        # Calculing the position of the light
+        projection1.multiply(light_position,translationLight,light_pos)
+        projection1.multiply(light_pos,projection_matrix,light_pos)
+
         # Drawing the cube
-        projection1.draw(screen,projected_vertices,triangles)
+        projection1.draw(screen,projected_vertices,triangles,light_position,light_pos)
 
         # Subtracting the angle of the object
         angle -= 0.01
+
+        # Move the light in the X axis
+        # lightX -= 0.1
 
         # Updating the screen
         pygame.display.update()
