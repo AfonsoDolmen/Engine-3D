@@ -8,6 +8,7 @@
 # Futures Added:
 # Culling;
 # Rasterization;
+# Ambient light;
 
 import pygame
 import projection,matrices,cube,objLoader
