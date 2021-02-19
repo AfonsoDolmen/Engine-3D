@@ -1,8 +1,12 @@
 import math, pygame, pygame.gfxdraw
+import light
+
+light = light.Light()
 
 class Projection:
     def __init__(self):
         self.i  = 0
+        self.lightIndex = 0
 
         self.camera = [0,0,0]
         
@@ -39,6 +43,25 @@ class Projection:
 
         self.i = 0
 
+        # Color of the object
+        self.white = [255,255,255]
+        self.red   = [255,0,0]
+        self.green = [0,255,0]
+        self.blue  = [0,0,255]
+
+        # Define the ambient light
+        # First parameter: Strenght of the light
+        # Second parameter: The color of the cube
+        self.ambient = light.ambient_light(5,self.blue)
+
+        # If the valor of the rgb > 255, the valor it's gonna be 255
+        while self.lightIndex < len(self.ambient):
+            if self.ambient[self.lightIndex] >= 255: self.ambient[self.lightIndex] = 255
+
+            self.lightIndex += 1
+
+        self.lightIndex = 0
+
         # Drawing the triangles
         for triangle in triangles:
             a = int(triangle[0])
@@ -47,30 +70,30 @@ class Projection:
 
             # Culling
             v0 = [vertices[b][0] - vertices[a][0],
-                  vertices[b][1] - vertices[a][1],
-                  vertices[b][2] - vertices[a][2]]
+                vertices[b][1] - vertices[a][1],
+                vertices[b][2] - vertices[a][2]]
 
             v1 = [vertices[c][0] - vertices[a][0],
-                  vertices[c][1] - vertices[a][1],
-                  vertices[c][2] - vertices[a][2]]
+                vertices[c][1] - vertices[a][1],
+                vertices[c][2] - vertices[a][2]]
 
             normal = [v0[1] * v1[2] - v0[2] * v1[1],
-                      v0[2] * v1[0] - v0[0] * v1[2],
-                      v0[0] * v1[1] - v0[1] * v1[0]]
+                    v0[2] * v1[0] - v0[0] * v1[2],
+                    v0[0] * v1[1] - v0[1] * v1[0]]
 
             l = math.sqrt(normal[0]*normal[0] + normal[1]*normal[1] + normal[2]*normal[2])
             normal[0] /= l; normal[1] /= l; normal[2] /= l
 
             if normal[0] + normal[1] + normal[2] < 0.0:
                 # Wireframe
-                pygame.draw.line(screen,(0,0,0),(vertices[a][0],vertices[a][1]),(vertices[b][0],vertices[b][1]),5)
-                pygame.draw.line(screen,(0,0,0),(vertices[b][0],vertices[b][1]),(vertices[c][0],vertices[c][1]),5)
-                pygame.draw.line(screen,(0,0,0),(vertices[c][0],vertices[c][1]),(vertices[a][0],vertices[a][1]),5)
+                # pygame.draw.line(screen,(0,0,0),(vertices[a][0],vertices[a][1]),(vertices[b][0],vertices[b][1]),3)
+                # pygame.draw.line(screen,(0,0,0),(vertices[b][0],vertices[b][1]),(vertices[c][0],vertices[c][1]),3)
+                # pygame.draw.line(screen,(0,0,0),(vertices[c][0],vertices[c][1]),(vertices[a][0],vertices[a][1]),3)
                 
                 # Rasterization
                 pygame.gfxdraw.filled_trigon(screen,int(vertices[a][0]),int(vertices[a][1]),
                                                     int(vertices[b][0]),int(vertices[b][1]),
-                                                    int(vertices[c][0]),int(vertices[c][1]),(255,255,255))
+                                                    int(vertices[c][0]),int(vertices[c][1]),tuple(self.ambient))
 
         # Drawing the vertices
         # for vertice in vertices:

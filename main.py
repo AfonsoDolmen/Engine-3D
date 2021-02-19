@@ -69,11 +69,11 @@ def update(screen):
     scaled_vertices     = [s for s in range(len(vertices))]
 
     # Cube position
-    tX,tY,tZ = 0, -0.7, 3
+    tX,tY,tZ = 0, -0.5, 3
 
     # Cube scale
-    scaleX,scaleY,scaleZ = 1, 0.7, 1
- 
+    scaleX,scaleY,scaleZ = 1, 0.6, 1
+
     # Taking the projection matrix
     projection_matrix = matrix.projection_matrice(0.1,1000,45)
 
@@ -86,7 +86,7 @@ def update(screen):
         
         # Clear the screen
         screen.fill((0,0,0))
-
+        
         # Creating the matrices
         rotationX   = matrix.rotation_matrixX(angle)
         rotationY   = matrix.rotation_matrixY(angle)
