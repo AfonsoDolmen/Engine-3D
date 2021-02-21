@@ -23,11 +23,11 @@ matrix = matrices.Matrix()
 # Summoning the object loader
 objLoader = objLoader.ObjLoader(False)
 
-objLoader.loadObj('sphere.obj')
+#objLoader.loadObj('sphere.obj')
 
 # Taking the vertices and triangles of the obj
-objVertices  = objLoader.takeVertices()
-objTriangles = objLoader.takeTriangles()
+#objVertices  = objLoader.takeVertices()
+#objTriangles = objLoader.takeTriangles()
 
 cube = cube.Cube(False)
 
@@ -121,7 +121,7 @@ def update(screen):
         # Subtracting the angle of the object
         angle -= 0.01
 
-        lightX -= 0.1
+        lightX += 0.1
 
         # Updating the screen
         pygame.display.update()
