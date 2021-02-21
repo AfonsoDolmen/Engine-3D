@@ -2,6 +2,8 @@ class ObjLoader:
     def __init__(self, render):
         self.render = render
 
+        self.i = 0
+
     def takeTriangles(self):
         return self.triangles
 

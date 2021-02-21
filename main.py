@@ -9,6 +9,7 @@
 # Culling;
 # Rasterization;
 # Ambient light;
+# Diffuse light;
 
 import pygame
 import projection,matrices,cube,objLoader
@@ -22,7 +23,7 @@ matrix = matrices.Matrix()
 # Summoning the object loader
 objLoader = objLoader.ObjLoader(False)
 
-objLoader.loadObj('teapot.obj')
+objLoader.loadObj('sphere.obj')
 
 # Taking the vertices and triangles of the obj
 objVertices  = objLoader.takeVertices()
@@ -56,8 +57,8 @@ def update(screen):
     index = 0
     angle = 0
 
-    vertices  = objVertices.copy()
-    triangles = objTriangles.copy()
+    vertices  = cubeVertices.copy()
+    triangles = cubeTriangles.copy()
 
     # Saving all the projected vertices in a list
     projected_vertices = [n for n in range(len(vertices))]
@@ -70,16 +71,17 @@ def update(screen):
     scaled_vertices     = [s for s in range(len(vertices))]
 
     # Cube position
-    tX,tY,tZ = 0, -0.5, 5
+    tX,tY,tZ = 0, -0.5, 3
 
     # Cube scale
-    scaleX,scaleY,scaleZ = 0.05, 0.03, 0.05
+    scaleX,scaleY,scaleZ = 1, 0.7, 1
 
     # Light position
-    lightX,lightY,lightZ = 0,1,-1
+    lightX,lightY,lightZ = -2,0,0
 
     light_position = [[lightX,lightY,lightZ]]
     light_pos = [l for l in range(len(light_position))]
+
 
     # Taking the projection matrix
     projection_matrix = matrix.projection_matrice(0.1,1000,45)
@@ -93,33 +95,33 @@ def update(screen):
         
         # Clear the screen
         screen.fill((0,0,0))
-        
+
         # Creating the matrices
         rotationX   = matrix.rotation_matrixX(angle)
         rotationY   = matrix.rotation_matrixY(angle)
         rotationZ   = matrix.rotation_matrixZ(angle)
-        translationLight = matrix.translation_matrix(lightX,lightY,lightZ)
         translation = matrix.translation_matrix(tX,tY,tZ)
+        translationLight = matrix.translation_matrix(lightX,lightY,lightZ)
         scale       = matrix.scale_matrix(scaleX,scaleY,scaleZ)
-
-        # Multiplying the vertices by the matrices
-        scaleVertices(vertices,scale,scaled_vertices)
-        rotateVertices(scaled_vertices,rotationY,rot_verticesY)
-        translateVertices(rot_verticesY,translation,translated_vertices)
-        projectVertices(translated_vertices,projection_matrix,projected_vertices)
 
         # Calculing the position of the light
         projection1.multiply(light_position,translationLight,light_pos)
         projection1.multiply(light_pos,projection_matrix,light_pos)
 
-        # Drawing the cube
+        # Multiplying the vertices by the matrices
+        scaleVertices(vertices,scale,scaled_vertices)
+        rotateVertices(scaled_vertices,rotationY,rot_verticesY)
+        #rotateVertices(rot_verticesY,rotationZ,rot_verticesZ)
+        translateVertices(rot_verticesY,translation,translated_vertices)
+        projectVertices(translated_vertices,projection_matrix,projected_vertices)
+        
+
         projection1.draw(screen,projected_vertices,triangles,light_position,light_pos)
 
         # Subtracting the angle of the object
         angle -= 0.01
 
-        # Move the light in the X axis
-        # lightX -= 0.1
+        lightX -= 0.1
 
         # Updating the screen
         pygame.display.update()

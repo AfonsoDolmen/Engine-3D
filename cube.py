@@ -23,8 +23,8 @@ class Cube:
         # Creating the list of triangles
         
                         # Frontal face
-        self.triangles=[[0,1,3],
-                        [1,2,3],
+        self.triangles=[[0,1,2],
+                        [0,2,3],
                         
                         # Left face
                         [0,4,5], 

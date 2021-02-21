@@ -10,7 +10,7 @@ class Projection:
         self.lightIndex = 0
 
         # Define the light strenght
-        self.light_strenght = 8
+        self.light_strenght = 1
 
         # Color of the object
         self.white = [255,255,255]
@@ -51,11 +51,10 @@ class Projection:
 
         self.i = 0
 
-        # Drawing the triangles
         for triangle in triangles:
-            a = int(triangle[0])-1
-            b = int(triangle[1])-1
-            c = int(triangle[2])-1
+            a = int(float(triangle[0]))
+            b = int(float(triangle[1]))
+            c = int(float(triangle[2]))
 
             # Culling
             v0 = [vertices[b][0] - vertices[a][0],
@@ -73,19 +72,21 @@ class Projection:
             l = math.sqrt(normal[0]*normal[0] + normal[1]*normal[1] + normal[2]*normal[2])
             normal[0] /= l; normal[1] /= l; normal[2] /= l
 
-            # Light
-            self.ambient = light.ambient_light(self.light_strenght,self.green)
-            self.diffuse = light.diffuse_light(normal,self.green,light_position,light_pos)
-
-            # If the valor of the rgb > 255, the valor it's gonna be 255
-            while self.lightIndex < len(self.ambient):
-                if self.ambient[self.lightIndex] >= 255: self.ambient[self.lightIndex] = 255
-
-                self.lightIndex += 1
-
-            self.lightIndex = 0
+            #print(self.diffuse)
 
             if normal[0] + normal[1] + normal[2] < 0.0:
+                 # Light
+                self.ambient = light.ambient_light(self.light_strenght,self.green)
+                self.diffuse = light.diffuse_light(normal,self.green,light_position,light_pos,self.ambient)
+
+                # If the valor of the rgb > 255, the valor it's gonna be 255
+                while self.lightIndex < len(self.diffuse):
+                    if self.diffuse[self.lightIndex] >= 255: self.diffuse[self.lightIndex] = 255
+
+                    self.lightIndex += 1
+
+                self.lightIndex = 0
+
                 # Wireframe
                 # pygame.draw.line(screen,(0,0,0),(vertices[a][0],vertices[a][1]),(vertices[b][0],vertices[b][1]),3)
                 # pygame.draw.line(screen,(0,0,0),(vertices[b][0],vertices[b][1]),(vertices[c][0],vertices[c][1]),3)
@@ -94,7 +95,7 @@ class Projection:
                 # Rasterization
                 pygame.gfxdraw.filled_trigon(screen,int(vertices[a][0]),int(vertices[a][1]),
                                                     int(vertices[b][0]),int(vertices[b][1]),
-                                                    int(vertices[c][0]),int(vertices[c][1]),tuple(self.ambient))
+                                                    int(vertices[c][0]),int(vertices[c][1]),tuple(self.diffuse))
 
         # Drawing the vertices
         # for vertice in vertices:
