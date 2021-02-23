@@ -1,5 +1,4 @@
 import math
-import projection
 
 class Light:
     def __init__(self):
@@ -8,7 +7,7 @@ class Light:
         self.color_light = [1,1,1]
 
     # Create the ambient light
-    def ambient_light(self,ambient_strenght,object_color):
+    def ambient_light(self,ambient_strenght,object_color):        
         self.ambient = [self.color_light[0] * ambient_strenght,
                         self.color_light[1] * ambient_strenght,
                         self.color_light[2] * ambient_strenght]
@@ -30,7 +29,7 @@ class Light:
                            self.light_dir[2] / self.light_dir_mag]
 
         self.diff_dot = self.light_dirN[0] * normal[0] + self.light_dirN[1] * normal[1] + self.light_dirN[2] * normal[2]
-        self.diff     = max(self.diff_dot,0)
+        self.diff     = max(self.diff_dot,0.0)
 
         self.diffuse = [self.diff * self.color_light[0],
                         self.diff * self.color_light[1],

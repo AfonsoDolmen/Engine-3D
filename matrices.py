@@ -7,9 +7,9 @@ class Matrix:
         self.fov = fov
         self.a = 400/800
 
-        self.m00 = 1.0 / self.a * math.tan(self.fov/2 * 3.14159 / 180) # Creating the fovX with the aspect
-        self.m11 = 1.0 / math.tan(self.fov/2 * 3.14159 / 180)          # Creating the fovY
-        self.m22 = self.far / (self.far - self.near)                   # Adjusting the z coordinates with the near and far
+        self.m00 = 1.0 / self.a * math.tan(self.fov / 2 * 3.14159 / 180) # Creating the fovX with the aspect
+        self.m11 = 1.0 / math.tan(self.fov / 2 * 3.14159 / 180)          # Creating the fovY
+        self.m22 = self.far / (self.far - self.near)                     # Adjusting the z coordinates with the near and far
         self.m32 = (self.far - self.near) / (self.far - self.near)
 
         self.projection_matrix = [[self.m00,0,0,0],
@@ -23,9 +23,9 @@ class Matrix:
         self.angle = angle
 
         self.rotationX = [[1,0,0,0],
-                        [0,math.cos(self.angle),-math.sin(self.angle),0],
-                        [0,math.sin(self.angle),math.cos(self.angle),0],
-                        [0,0,0,1]]
+                          [0,math.cos(self.angle),-math.sin(self.angle),0],
+                          [0,math.sin(self.angle),math.cos(self.angle),0],
+                          [0,0,0,1]]
         
         return self.rotationX
 
@@ -33,9 +33,9 @@ class Matrix:
         self.angle = angle
 
         self.rotationY = [[math.cos(self.angle),0,math.sin(self.angle),0],
-                        [0,1,0,0],
-                        [-math.sin(self.angle),0,math.cos(self.angle),0],
-                        [0,0,0,1]]
+                          [0,1,0,0],
+                          [-math.sin(self.angle),0,math.cos(self.angle),0],
+                          [0,0,0,1]]
         
         return self.rotationY
 
@@ -43,9 +43,9 @@ class Matrix:
         self.angle = angle
 
         self.rotationZ = [[math.cos(self.angle),math.sin(self.angle),0,0],
-                         [-math.sin(self.angle),math.cos(self.angle),0,0],
-                         [0,0,1,0],
-                         [0,0,0,1]]
+                          [-math.sin(self.angle),math.cos(self.angle),0,0],
+                          [0,0,1,0],
+                          [0,0,0,1]]
         
         return self.rotationZ
 

@@ -10,7 +10,7 @@ class Projection:
         self.lightIndex = 0
 
         # Define the light strenght
-        self.light_strenght = 1
+        self.light_strenght = 0.1
 
         # Color of the object
         self.white = [255,255,255]
@@ -76,12 +76,13 @@ class Projection:
 
             if normal[0] + normal[1] + normal[2] < 0.0:
                  # Light
-                self.ambient = light.ambient_light(self.light_strenght,self.green)
-                self.diffuse = light.diffuse_light(normal,self.green,light_position,light_pos,self.ambient)
+                self.ambient = light.ambient_light(self.light_strenght,self.white)
+                self.diffuse = light.diffuse_light(normal,self.white,light_position,light_pos,self.ambient)
 
                 # If the valor of the rgb > 255, the valor it's gonna be 255
                 while self.lightIndex < len(self.diffuse):
                     if self.diffuse[self.lightIndex] >= 255: self.diffuse[self.lightIndex] = 255
+                    if self.diffuse[self.lightIndex] <= 0: self.diffuse[self.lightIndex] = 0
 
                     self.lightIndex += 1
 
